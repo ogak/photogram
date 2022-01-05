@@ -1,0 +1,33 @@
+version: "3.9"
+services:
+  backend:
+    image: ogak/photogram-api:latest
+    container_name: photogram-api
+    ports:
+      - 5000:5000
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+    networks:
+      - photogram-network
+  
+  mongodb:
+    image: mongo:latest
+    container_name: photogram-db
+    ports:
+      - 27017:27017
+    volumes:
+      - "/home/ogak/mongodb/photogram:/data/db"
+    networks:
+      - photogram-network
+
+  frontend:
+    image: ogak/photogram:latest
+    container_name: photogram
+    ports:
+      - 8080:8080
+  
+networks:
+  photogram-network:
+    driver: bridge
